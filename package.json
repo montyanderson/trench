@@ -1,7 +1,7 @@
 {
   "name": "trench",
   "version": "0.0.1",
-  "description": "",
+  "description": "Simplistic, promise-based web framework for node.",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
