@@ -1,6 +1,12 @@
 # trench
 Simplistic, promise-based web framework for node.
 
+## features
+
+* Supports new [ES6 features](https://github.com/lukehoban/es6features) such as [Promises](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise) and [Sets](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Set).
+* Prioritises speed and simplicity over a large feature-set or extensive options.
+
+
 ## usage
 
 ``` javascript
