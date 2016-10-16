@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/montyanderson/trench.svg?branch=master)](https://travis-ci.org/montyanderson/trench)
 
-Simplistic, promise-based web framework for node.
+:neckbeard: Simplistic, promise-based web framework for node.
 
 ## features
 
