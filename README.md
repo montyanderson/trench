@@ -9,6 +9,8 @@ Simplistic, promise-based web framework for node.
 
 ## usage
 
+* Requires Node 6.0+
+
 ``` javascript
 const Trench = require("trench");
 
