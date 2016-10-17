@@ -25,3 +25,43 @@ app.get("/", (req, res) => {
 
 app.listen(8080);
 ```
+
+### api
+
+#### new Trench()
+
+Returns a new app instance.
+
+``` javascript
+const app = new Trench();
+```
+
+#### Trench#use(function)
+
+Specifices a middleware function to be used.
+
+``` javascript
+app.use((req, res) => {
+	res.locals.startTime = Date.now();
+});
+```
+
+#### Trench.static(root)
+
+Returns a middleware function for serving static files.
+
+``` javascript
+app.use(Trench.static(__dirname + "/static"));
+```
+
+#### Trench#get(path, [ function, [ function, [ function ]]])
+
+Specifices a GET route for the given path.
+
+``` javascript
+app.get("/", (req, res) => {
+	res.locals.name = "Monty";
+}, (req, res) => {
+	res.end(`Hi, ${res.locals.name}!`);
+});
+```
