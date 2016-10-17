@@ -34,6 +34,7 @@ class Trench {
 			let ended = false;
 
 			req.end = function() {
+				ended = true;
 				reqEnd.apply(req, arguments);
 			};
 
