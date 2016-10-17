@@ -55,6 +55,8 @@ class Trench {
 					res.end();
 				});
 			}
+
+			p.catch(err => console.log(err));
 		};
 	}
 
@@ -71,8 +73,8 @@ class Trench {
 
 		return (req, res) => {
 			return new Promise((resolve, reject) => {
-				console.log(req);
-				const stream = send(req, req.path, { root });
+				let path = req.path;
+				const stream = send(req, path, { root });
 
 				stream.on("error", resolve);
 				stream.on("finish", resolve);
