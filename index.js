@@ -1,6 +1,7 @@
 "use strict";
 const http = require("http");
 const url = require("url");
+const send = require("send");
 
 class Trench {
 	constructor() {
@@ -29,21 +30,30 @@ class Trench {
 
 			res.locals = {};
 
+			const reqEnd = req.end;
+			let ended = false;
+
+			req.end = function() {
+				reqEnd.apply(req, arguments);
+			};
+
 			const path = this.router.endpoints[req.path];
 			let p = Promise.resolve();
+			let route = [].concat(this.router.globals);
 
 			if(path) {
-				this.router.globals.forEach(f => {
-					p = p.then(() => f(req, res));
-				});
+				route = route.concat(path.functions);
+			}
 
-				path.functions.forEach(f => {
-					console.log(f);
-					p = p.then(() => f(req, res));
+			route.forEach(f => {
+				p = p.then(() => !ended && f(req, res));
+			});
+
+			if(!path) {
+				p = p.then(() => {
+					res.writeHead(404);
+					res.end();
 				});
-			} else {
-				res.writeHead(404);
-				res.end();
 			}
 		};
 	}
@@ -54,6 +64,21 @@ class Trench {
 
 	listen(port = 8080) {
 		this.server().listen(port);
+	}
+
+	static static(root) {
+		if(!root) throw new TypeError("root path required");
+
+		return (req, res) => {
+			return new Promise((resolve, reject) => {
+				console.log(req);
+				const stream = send(req, req.path, { root });
+
+				stream.on("error", resolve);
+				stream.on("finish", resolve);
+				stream.pipe(res);
+			});
+		};
 	}
 };
 
