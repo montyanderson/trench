@@ -35,7 +35,7 @@ class Trench {
 
 			req.end = function() {
 				ended = true;
-				reqEnd.apply(req, arguments);
+				reqEnd.apply(this, arguments);
 			};
 
 			const path = this.router.endpoints[req.path];
@@ -57,7 +57,11 @@ class Trench {
 				});
 			}
 
-			p.catch(err => console.log(err));
+			p.catch(error => {
+				console.log(error);
+				res.writeHead(500);
+				res.end("500 Internal Server Error");
+			});
 		};
 	}
 
