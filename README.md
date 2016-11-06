@@ -4,14 +4,14 @@
 
 :large_orange_diamond: Simplistic, promise-based web framework for node.
 
-## features
+## Features
 
 * Supports new [ES6 features](https://github.com/lukehoban/es6features) such as [Promises](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise) and [Sets](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Set).
 * Prioritises speed and simplicity over a large feature-set or extensive options.
 * API modeled on the ever-popular [Express](http://expressjs.com/).
 * In equivalent "Hello, World!" examples, it's faster than both [hapi](http://hapijs.com/) and [Express](http://expressjs.com/).
 
-## usage
+## Usage
 
 * Requires Node 6.0+
 
@@ -27,7 +27,11 @@ app.get("/", (req, res) => {
 app.listen(8080);
 ```
 
-### api
+### Recommended Modules
+
+* [trench-session](https://github.com/montyanderson/trench-session)
+
+### API
 
 #### new Trench()
 
