@@ -7,6 +7,7 @@
 ## Features
 
 * Supports new [ES6 features](https://github.com/lukehoban/es6features) such as [Promises](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise) and [Sets](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Set).
+* Supports all HTTP methods listed in [http.METHODS](https://nodejs.org/api/http.html#http_http_methods).
 * Prioritises speed and simplicity over a large feature-set or extensive options.
 * API modeled on the ever-popular [Express](http://expressjs.com/).
 * In equivalent "Hello, World!" examples, it's *faster than both [hapi](http://hapijs.com/) and [Express](http://expressjs.com/)*.

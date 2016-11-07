@@ -9,19 +9,16 @@ class Trench {
 			globals: [],
 			endpoints: {}
 		};
+
+		http.METHODS.forEach(method => {
+			this.router.endpoints[method] = {};
+		});
 	}
 
 	use(func) {
 		if(typeof func == "function") {
 			this.router.globals.push(func);
 		}
-	}
-
-	get(path) {
-		this.router.endpoints[path] = {
-			method: "GET",
-			functions: Array.prototype.slice.call(arguments, 1)
-		};
 	}
 
 	handler() {
@@ -38,7 +35,12 @@ class Trench {
 				reqEnd.apply(this, arguments);
 			};
 
-			const path = this.router.endpoints[req.path];
+			if(!this.router.endpoints[req.method]) {
+				req.writeHead(500);
+				res.end("500 Method not supported.");
+			}
+
+			const path = this.router.endpoints[req.method][req.path];
 			let p = Promise.resolve();
 			let route = [].concat(this.router.globals);
 
@@ -53,7 +55,7 @@ class Trench {
 			if(!path) {
 				p = p.then(() => {
 					res.writeHead(404);
-					res.end();
+					res.end("404 Not Found");
 				});
 			}
 
@@ -88,5 +90,15 @@ class Trench {
 		};
 	}
 };
+
+http.METHODS.forEach(method => {
+	Trench.prototype[method.toLowerCase()] =
+	Trench.prototype[method] = function(path) {
+		this.router.endpoints[method][path] = {
+			method,
+			functions: Array.prototype.slice.call(arguments, 1)
+		};
+	};
+});
 
 module.exports = Trench;
