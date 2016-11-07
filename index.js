@@ -2,6 +2,7 @@
 const http = require("http");
 const url = require("url");
 const send = require("send");
+const querystring = require("querystring");
 
 class Trench {
 	constructor() {
@@ -86,6 +87,38 @@ class Trench {
 				stream.on("error", resolve);
 				stream.on("finish", resolve);
 				stream.pipe(res);
+			});
+		};
+	}
+
+	static bodyParser() {
+		return (req, res) => {
+			if(req.method != "POST") return;
+
+			return new Promise((resolve, reject) => {
+				let data = "";
+
+				req.on("data", chunk => {
+					 data += chunk;
+
+					 if(Buffer.byteLength(data) > 20000) {
+						 const error = new Error("Post body size exceedes 200k bytes.");
+						 reject(error);
+						 throw error;
+					 }
+				});
+
+				req.on("end", () => {
+					console.log("yo!");
+
+					try {
+						req.body = querystring.parse(data);
+						resolve();
+					} catch(error) {
+						reject(error);
+						throw error;
+					}
+				});
 			});
 		};
 	}
