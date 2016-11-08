@@ -1,6 +1,6 @@
 {
   "name": "trench",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Simplistic, promise-based web framework for node.",
   "main": "index.js",
   "scripts": {
