@@ -1,13 +1,16 @@
 "use strict";
 const http = require("http");
 const url = require("url");
-const send = require("send");
 const querystring = require("querystring");
 
 class Trench {
 	constructor() {
 		this.router = {
-			globals: [],
+			globals: [
+				(req, res) => {
+					res.setHeader("Content-Type", "text/html");
+				}
+			],
 			endpoints: {}
 		};
 
@@ -75,53 +78,6 @@ class Trench {
 	listen(port = 8080) {
 		this.server().listen(port);
 	}
-
-	static static(root) {
-		if(!root) throw new TypeError("root path required");
-
-		return (req, res) => {
-			return new Promise((resolve, reject) => {
-				let path = req.path;
-				const stream = send(req, path, { root });
-
-				stream.on("error", resolve);
-				stream.on("finish", resolve);
-				stream.pipe(res);
-			});
-		};
-	}
-
-	static bodyParser() {
-		return (req, res) => {
-			if(req.method != "POST") return;
-
-			return new Promise((resolve, reject) => {
-				let data = "";
-
-				req.on("data", chunk => {
-					 data += chunk;
-
-					 if(Buffer.byteLength(data) > 20000) {
-						 const error = new Error("Post body size exceedes 200k bytes.");
-						 reject(error);
-						 throw error;
-					 }
-				});
-
-				req.on("end", () => {
-					console.log("yo!");
-
-					try {
-						req.body = querystring.parse(data);
-						resolve();
-					} catch(error) {
-						reject(error);
-						throw error;
-					}
-				});
-			});
-		};
-	}
 };
 
 http.METHODS.forEach(method => {
@@ -133,5 +89,8 @@ http.METHODS.forEach(method => {
 		};
 	};
 });
+
+Trench.static = require("./lib/static");
+Trench.bodyParser = require("./lib/bodyParser");
 
 module.exports = Trench;
